@@ -1,0 +1,29 @@
+---
+title: "Sample Graphs & Tables"
+output: html_document
+---
+
+
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(xtable)
+library(readr)
+
+library(readr)
+meta_data_citations <- read_csv('meta_data_citations.csv')
+
+fig1 =ggplot(meta_data_citations, aes(x=journal, y = citations))+
+  geom_line()+
+  theme_bw(base_size = 4)+
+  theme(text=element_text(family="Times New Roman"))
+
+ggsave("Figures/test1.png", plot = fig1, width = .7, height = .7,dpi = 320)
+
+
+
+tbl1 = xtable(summary(meta_data_citations))
+print(xtable(tbl1, type = "latex", caption = "Xtable Example"), file = "Figures/table1.tex", caption.placement = "top")
+
+```
