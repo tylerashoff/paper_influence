@@ -298,7 +298,9 @@ class txt_analysis():
             vecs = pool.map(self.infer_helper, docs)
 
             if ids is not None:
-                vecs = np.hstack([np.array([ids]).T, np.array(vecs)])
+                print('add ids')
+                vecs = np.hstack([np.array([ids]).T.astype(str),
+                                  np.array(vecs).astype(str)])
                 pass
             
             print('saving', end = '\r')
@@ -335,15 +337,15 @@ class txt_analysis():
         self.infer_vectors(model_name = model_name, dirs = dirs,
                            save_name = './code/docvecs/docvecs')
         '''
-
+        '''
         # save doc vecs for abstracts
-        model_name = './code/doc2vec_abs'
+        model_name = './code/docvecs/doc2vec_abs'
         self.docvec(self.df.abstract, model_name=model_name, save=True)
 
         self.infer_vectors(model_name = model_name, docs = self.df.abstract,
                            ids = self.df.pmcid,
                            save_name = './code/docvecs/abs_docvec')
-
+        '''
         # tell me when im done for long runtimes
         if tell:
             self.tell_me_when_done()
