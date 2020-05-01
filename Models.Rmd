@@ -178,5 +178,31 @@ zinbin_all <- zeroinfl(formula=citations ~ .-log_citations-journal|.-log_citatio
                  data=train,trace=TRUE)
 
 
+```
 
+
+```{r}
+hist (full_data_merge$citations)
+hist (full_data_merge$log_citations)
+
+library(gridExtra)
+l = ggplot(data = full_data_merge)+
+  geom_histogram(aes(x = citations))+
+  theme_bw(base_size = 4)+
+  theme(text=element_text(family="Times New Roman"))+
+  xlab("Citation Count")+ylab("Count")
+
+lc = ggplot(data = full_data_merge)+
+  geom_histogram(aes(x = log_citations))+
+  theme_bw(base_size = 4)+
+  theme(text=element_text(family="Times New Roman"))+
+  xlab("Log(Citation Count+1)")+ylab("Count")
+
+grid.arrange(l, lc, nrow = 1)
+
+g = (arrangeGrob(l,lc,nrow = 1))
+
+
+ggsave("Figures/citation_hist.png", plot = g, width = 1.5, height = .7,dpi = 320)
+```
 
