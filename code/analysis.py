@@ -50,7 +50,7 @@ class analysis():
         preds = model.predict(x_test)
 
         if not self.binary:
-            return(preds)
+            return(preds.astype('float64').flatten())
         else:
             return(np.round(preds.flatten()))
         pass
@@ -111,6 +111,7 @@ class analysis():
         else:
             model = GaussianProcessClassifier()
             pass
+
         model.fit(x_train, y_train)
         preds = model.predict(x_test)
         return(preds)
@@ -119,20 +120,23 @@ class analysis():
 
         if not self.binary:
             mse = metrics.mean_squared_error(y_test, preds)
+            r2 = np.corrcoef(y_test, preds)[0, 1]
             ev = metrics.explained_variance_score(y_test, preds)
-            return(mse, ev)
+            return(mse, r2, ev)
         else:
             fpr, tpr, threshs = metrics.roc_curve(y_test, preds)
             auc =  metrics.auc(fpr, tpr)
             acc = metrics.accuracy_score(y_test, preds)
-            return(auc, acc)
+            f1 = metrics.f1_score(y_test, preds)
+            return(auc, acc, f1)
         pass
 
     def write(self, model, scores):
         types = 'regression' if not self.binary else 'binary'
-        csv.writer(open('results.csv', 'w')).writerow([str(self.embedding),
+        csv.writer(open('results.csv', 'a')).writerow([str(self.embedding),
                                                        types, model,
-                                                       scores[0], scores[1]])
+                                                       scores[0], scores[1],
+                                                       scores[2]])
         pass
         
     def main(self, x_train, x_test, y_train, y_test, binary=False, embedding=None):
@@ -144,7 +148,7 @@ class analysis():
         xg_scores = self.scores(y_test, xg_preds)
         self.write('xgboost', xg_scores)
         print(xg_scores)
-        '''
+
         gp_preds = self.gaussian_process(x_train, x_test, y_train)
         gp_scores = self.scores(y_test, gp_preds)
         self.write('gaussian_process', gp_scores)
@@ -154,7 +158,7 @@ class analysis():
         nn_scores = self.scores(y_test, nn_preds)
         self.write('neural_net', nn_scores)
         print(nn_scores)
-        
+        '''
         rf_preds = self.random_forest(x_train, x_test, y_train)
         rf_scores = self.scores(y_test, rf_preds)
         self.write('random_forests', rf_scores)
@@ -190,10 +194,30 @@ for embedding in embeddings:
         vec_dim = 5
         pass
     end_ind = vec_dim+8
-    
-    x = df[:, 4:]
-    # impute to 0
-    x[np.isnan(list(x.flatten())).reshape(x.shape)] = 0
+
+    # set missing values
+    df[:, 5:][np.isnan(list(df[:, 5:].flatten())).reshape(df[:, 5:].shape)] = 0
+    df[:, 2][[isinstance(i, float) for i in df[:, 2]]] = 'NA'
+
+    # enumerate journal entry
+    journal_to_int = dict((c, i) for i, c in enumerate(np.unique(df[:, 2])))
+    journal = np.array([journal_to_int[char] for char in df[:, 2]])
+
+    # transforms
+    small_const = 10**(-4)
+    x = np.vstack([
+        pd.to_datetime(df[:, 1]).year,
+        journal,
+        np.log(list(df[:, 5]+small_const)),
+        np.log(list(df[:, 6]+small_const)),
+        df[:, 7],
+        df[:, end_ind-2:end_ind+1].T,
+        np.log(list(df[:, end_ind+1]+small_const)),
+        df[:, end_ind+2],
+        np.log(list(df[:, end_ind+5]**2+small_const)),
+        np.log(list(df[:, end_ind+6]**2+small_const))
+    ]).T.astype('float64')
+
     y = np.log(list(df[:, 3]+10**(-4)))
     
     x_train, x_test, y_train, y_test = train_test_split(x, y,
@@ -206,8 +230,9 @@ for embedding in embeddings:
                binary=False, embedding=embedding)
     
     # binary predictions above a given number of citations
-    y_train = y_train > np.log(20)
-    y_test = y_test > np.log(20)
+    cut = 5
+    y_train = y_train > np.log(cut)
+    y_test = y_test > np.log(cut)
     print('ratio: ', sum(y_test)/len(y_test))
 
     anlys.main(x_train, x_test, y_train, y_test,
