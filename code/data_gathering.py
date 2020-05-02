@@ -4,26 +4,18 @@ import matplotlib.pyplot as plt
 import json
 from copy import deepcopy
 import csv
-
 import multiprocessing
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
 import re
-
 from gensim.models import doc2vec
 from collections import namedtuple
-
 from sklearn.manifold import MDS
-
 import requests
 from lxml import html
-
 from sklearn.manifold import TSNE
-
 import os
-
-#os.chdir('./project')
 
 
 class txt_analysis():
@@ -53,7 +45,9 @@ class txt_analysis():
         return (body, ref_count)
 
     def find_files(self, pmcid):
-
+        '''
+        pull specific json files using a given pmcid
+        '''
         main_path = 'kaggle/CORD-19-research-challenge/'
         json_paths = [
             'comm_use_subset/comm_use_subset/pmc_json/',
@@ -97,8 +91,8 @@ class txt_analysis():
         for url in urls:
             ind += 1
             print(ind, '/', len(urls))
-            #url = urls.iloc[0]#'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC156578/'
 
+            # pull citation data from NCBI website
             if 'ncbi' in url:
                 url = url + 'citedby/'
                 page = requests.get(url)
@@ -107,6 +101,7 @@ class txt_analysis():
                     '//*[@id="maincontent"]/div[2]/form/h2/text()')
                 pass
 
+            # pull from another website, but unused in this study
             elif 'doi' in url:
                 page = requests.get(url)
                 url = re.sub(
@@ -192,7 +187,8 @@ class txt_analysis():
 
     def docvec_update(self, docs, model_name, save=False):
         '''
-        online doc to vec updates
+        online doc to vec updates after initialized model
+        used in conjunction with docvec method
         '''
         if self.verbose:
             print('updating doc2vec model')
@@ -241,13 +237,6 @@ class txt_analysis():
             pass
         return (pmcids, refs)
 
-    def infer_helper(self, doc):
-        '''
-        support for infer_vectors, appends vectors to list
-        '''
-        vec = self.model.infer_vector(doc)
-        return (vec)
-
     def infer_vectors(self,
                       model_name,
                       save_name,
@@ -265,6 +254,7 @@ class txt_analysis():
         self.model = doc2vec.Doc2Vec.load(model_name + '.bin')
 
         if dirs is not None:
+            # multiple files for memory considerations
             filenames = os.listdir(dirs)
             count = 0
             for filename in filenames:
@@ -285,8 +275,9 @@ class txt_analysis():
                 docs = self.doc_transform(docs)
                 docs = [[token for token in doc[0]] for doc in docs]
 
+                # infer vectors from documents
                 pool = multiprocessing.Pool(self.threads)
-                vecs = pool.map(self.infer_helper, docs)
+                vecs = pool.map(self.model.infer_vector, docs)
                 docs = None
 
                 key = np.hstack([pmcids, refs])
@@ -323,48 +314,39 @@ class txt_analysis():
             pass
         pass
 
-    def tell_me_when_done(self, phrase='all done you frickin genius'):
-        os.system("say " + "'" + phrase + "'")
-        pass
-
-    def main(self, verbose=False, tell=False):
+    def main(self, verbose=False):
         self.verbose = verbose
         self.threads = 12
 
         # Gather attributes from json
-        '''
         main_path = 'kaggle/CORD-19-research-challenge/'
-        json_paths = ['comm_use_subset/comm_use_subset/pmc_json/',
-                      'custom_license/custom_license/pmc_json/',
-                      'noncomm_use_subset/noncomm_use_subset/pmc_json/']
-        paths = [main_path+json_path for json_path in json_paths]
+        json_paths = [
+            'comm_use_subset/comm_use_subset/pmc_json/',
+            'custom_license/custom_license/pmc_json/',
+            'noncomm_use_subset/noncomm_use_subset/pmc_json/'
+        ]
+        paths = [main_path + json_path for json_path in json_paths]
         self.document_attrs = self.gather_texts(self.df, paths)
 
         # save Doc2Vec for body text
-        
         dirs = './code/jsons/'
         model_name = './code/doc2vec_model'
+        self.pmcids, self.refs = self.docvec_files(
+            dirs=dirs, model_name=model_name)
+        self.infer_vectors(
+            model_name=model_name,
+            dirs=dirs,
+            save_name='./code/docvecs/docvecs')
 
-        self.pmcids, self.refs = self.docvec_files(dirs = dirs,
-                                                   model_name = model_name)
-        self.infer_vectors(model_name = model_name, dirs = dirs,
-                           save_name = './code/docvecs/docvecs')
-        '''
-        '''
-        # save doc vecs for abstracts
+        # save Doc2Vec for abstracts
         model_name = './code/docvecs/doc2vec_abs'
         self.docvec(self.df.abstract, model_name=model_name, save=True)
+        self.infer_vectors(
+            model_name=model_name,
+            docs=self.df.abstract,
+            ids=self.df.pmcid,
+            save_name='./code/docvecs/abs_docvec')
 
-        self.infer_vectors(model_name = model_name, docs = self.df.abstract,
-                           ids = self.df.pmcid,
-                           save_name = './code/docvecs/abs_docvec')
-        '''
-        # tell me when im done for long runtimes
-        if tell:
-            self.tell_me_when_done()
-            pass
-
-        #self.tsne(self.vectors, plot = True)
         pass
 
     pass
@@ -376,11 +358,11 @@ meta_og = pd.read_csv('kaggle/CORD-19-research-challenge/metadata.csv')
 finder = pd.Series([str(url) for url in meta_og.url])
 meta = meta_og[finder.str.contains('ncbi')]  #'doi|ncbi')]
 
-cite = txt_analysis(meta.tail(100))
-#cites = cite.web_scrape(meta.urls)
+cite = txt_analysis(meta)
+cites = cite.web_scrape(meta.urls)
 
 df = pd.read_csv('meta_data_citations.csv')
 df_comp = df[df.abstract.notna()]
 
 txt = txt_analysis(df_comp)
-txt.main(verbose=True, tell=True)
+txt.main(verbose=True)

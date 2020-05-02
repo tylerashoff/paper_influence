@@ -21,7 +21,9 @@ class embeddings():
         pass
 
     def sampling(self, args):
-
+        '''
+        supports the var_autoencoder method
+        '''
         z_mean, z_log_var = args
         batch = K.shape(z_mean)[0]
         dim = K.int_shape(z_mean)[1]
@@ -30,6 +32,9 @@ class embeddings():
         return z_mean + K.exp(0.5 * z_log_var) * epsilon
 
     def var_autoencoder(self, x_train, x_test, dim=2):
+        '''
+        return latent mean from a variational autoencoder
+        '''
         if self.verbose:
             print('variational autoencoder')
         original_dim = x_train.shape[1]
@@ -48,7 +53,6 @@ class embeddings():
         z_log_var = Dense(latent_dim, name='z_log_var')(x)
 
         # use reparameterization trick to push the sampling out as input
-        # note that "output_shape" isn't necessary with the TensorFlow backend
         z = Lambda(
             self.sampling, output_shape=(latent_dim,),
             name='z')([z_mean, z_log_var])
@@ -89,6 +93,9 @@ class embeddings():
         return (latent_mean)
 
     def stress_r2(self, X1, X2):
+        '''
+        compute Kruskal's stress and R^2 values for embedding
+        '''
         if self.verbose:
             print('stressing out')
             pass
@@ -141,6 +148,9 @@ class embeddings():
         pass
 
     def spec(self, data, dim=3):
+        '''
+        embed data using spectral embedding
+        '''
         if self.verbose:
             print('spectral embedding')
             pass
@@ -148,6 +158,9 @@ class embeddings():
         return (spec)
 
     def smacof(self, data, dim=3):
+        '''
+        embed data using smacof method of mds
+        '''
         if self.verbose:
             print('smacof')
             pass
@@ -157,6 +170,9 @@ class embeddings():
         return (smac)
 
     def isomap(self, data, dim=3):
+        '''
+        embed data using Isomap
+        '''
         if self.verbose:
             print('Isomap')
             pass
@@ -323,10 +339,4 @@ for embedding in embeddings:
 
     emb.save(filename='./datasets/' + filename + '.csv', data=data)
 
-    if embedding is not None and emb.verbose:
-        os.system("say " + "'done with " + embedding + "'")
-        pass
-    pass
-if emb.verbose:
-    os.system("say 'all done you frickin genius'")
     pass

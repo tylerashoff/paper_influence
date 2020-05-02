@@ -2,6 +2,10 @@ import pandas as pd
 import numpy as np
 from functools import reduce
 import csv
+'''
+Script only used to combine csv files
+files originally split because of memory issues
+'''
 
 df = pd.read_csv('./code/meta_data_citations.csv')
 abstracts = pd.read_csv('./code/docvecs/abs_docvec.csv').to_numpy()
