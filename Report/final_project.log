@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  2 MAY 2020 11:03
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  2 MAY 2020 14:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -226,10 +226,14 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 [3 <../Figures/citation_hist.png> <../Figures/binary.png>] [4 <../Figures/regre
 ssion.png>]
 ! Undefined control sequence.
-l.121 ...tations for literature. {\itInternational
+l.123 ...tations for literature. {\itInternational
                                                    Conference on  Informatio...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-? 
 [5] (./final_project.aux) ) 
 Here is how much of TeX's memory you used:
  2214 strings out of 492649
@@ -248,7 +252,7 @@ mr10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
 sr/local/texlive/2018/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/t
 exlive/2018/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/201
 8/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on final_project.pdf (5 pages, 606060 bytes).
+Output written on final_project.pdf (5 pages, 606198 bytes).
 PDF statistics:
  62 PDF objects out of 1000 (max. 8388607)
  38 compressed objects within 1 object stream
