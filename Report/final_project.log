@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  1 MAY 2020 15:01
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  2 MAY 2020 12:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -95,7 +95,11 @@ Package graphics Info: Driver file: pdftex.def on input line 99.
 \Gin@req@height=\dimen106
 \Gin@req@width=\dimen107
 )
-(./final_project.aux)
+(./final_project.aux
+
+LaTeX Warning: Label `others' multiply defined.
+
+)
 \openout1 = `final_project.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 29.
@@ -111,8 +115,7 @@ LaTeX Font Info:    ... okay on input line 29.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 29.
 LaTeX Font Info:    ... okay on input line 29.
 LaTeX Font Info:    Try loading font information for OT1+ptm on input line 29.
-
-(/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+ (/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 \AtBeginShipoutBox=\box28
@@ -194,44 +197,71 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
  [1
 
 {/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-<../Figures/test1.png, id=9, 50.589pt x 50.589pt>
-File: ../Figures/test1.png Graphic file (type png)
-<use ../Figures/test1.png>
-Package pdftex.def Info: ../Figures/test1.png  used on input line 118.
-(pdftex.def)             Requested size: 25.29443pt x 25.29443pt.
-
-(../Figures/table1.tex
-Overfull \hbox (1241.99161pt too wide) in paragraph at lines 6--19
- [][] 
- []
-
-) [2 <../Figures/test1.png>]
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 153.
+<../Figures/features.png, id=9, 904.37875pt x 682.55pt>
+File: ../Figures/features.png Graphic file (type png)
+<use ../Figures/features.png>
+Package pdftex.def Info: ../Figures/features.png  used on input line 58.
+(pdftex.def)             Requested size: 153.74236pt x 116.03197pt.
+<../Figures/citation_hist.png, id=11, 642.4pt x 224.84pt>
+File: ../Figures/citation_hist.png Graphic file (type png)
+<use ../Figures/citation_hist.png>
+Package pdftex.def Info: ../Figures/citation_hist.png  used on input line 81.
+(pdftex.def)             Requested size: 321.19922pt x 112.41972pt.
 
 
-(/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/omsptm.fd
-File: omsptm.fd 
-)
-LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 153.
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[2 <../Figures/features.png>]
+<../Figures/binary.png, id=20, 779.91376pt x 701.62125pt>
+File: ../Figures/binary.png Graphic file (type png)
+<use ../Figures/binary.png>
+Package pdftex.def Info: ../Figures/binary.png  used on input line 101.
+(pdftex.def)             Requested size: 171.58156pt x 154.35715pt.
+<../Figures/regression.png, id=21, 940.51375pt x 700.6175pt>
+File: ../Figures/regression.png Graphic file (type png)
+<use ../Figures/regression.png>
+Package pdftex.def Info: ../Figures/regression.png  used on input line 107.
+(pdftex.def)             Requested size: 206.91367pt x 154.13632pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 ! Undefined control sequence.
-l.177 ...tations for literature. {\itInternational
+l.120 ...tations for literature. {\itInternational
                                                    Conference on  Informatio...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-? 
-! Emergency stop.
-l.177 ...tations for literature. {\itInternational
-                                                   Conference on  Informatio...
-End of file on the terminal!
+[3 <../Figures/citation_hist.png> <../Figures/binary.png>] [4 <../Figures/regre
+ssion.png>] (./final_project.aux)
 
- 
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
 Here is how much of TeX's memory you used:
- 2216 strings out of 492649
- 31228 string characters out of 6129622
- 106561 words of memory out of 5000000
- 6077 multiletter control sequences out of 15000+600000
- 14414 words of font info for 30 fonts, out of 8000000 for 9000
+ 2212 strings out of 492649
+ 31302 string characters out of 6129622
+ 100592 words of memory out of 5000000
+ 6073 multiletter control sequences out of 15000+600000
+ 15452 words of font info for 31 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,9n,39p,457b,243s stack positions out of 5000i,500n,10000p,200000b,80000s
-!  ==> Fatal error occurred, no output PDF file produced!
+ 41i,8n,39p,1063b,243s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
+exlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/te
+xlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texl
+ive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive
+/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/
+2018/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2018/tex
+mf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2018/texmf-dist/fo
+nts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/
+urw/times/utmri8a.pfb>
+Output written on final_project.pdf (4 pages, 604073 bytes).
+PDF statistics:
+ 59 PDF objects out of 1000 (max. 8388607)
+ 36 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
+
