@@ -47,7 +47,7 @@ Citation count prediction is one of a number of methods for predicting the impor
 
 The CORD-19 dataset is a collection of scientific articles about COVID-19, SARS-CoV-2, and related coronaviruses. Our 12,372 sample subset of this dataset is chosen by first selecting observations available on the NCBI website and second ensuring that the full body of the text is available in the dataset. Unfortunately citation data was not supplied in the CORD-19, to gather these values we scraped available citation data from the NCBI website. The information available in our compiled dataset included, journal of publication, full article text, authors, number of articles cited in the text, and number of citations received by the article. Since we are interested in understanding paper importance in terms of contribution to the field, these citations are key to our inquiry.
 
-To transform the articles' text into usable features, each abstract and text body are run separately through gensim's python implementation of Doc2Vec. This resulted in a 100 dimensional vectorization of each text. We chose to analyze the abstracts independently because they are designed as a succinct summarization of the paper's content and could help focus the vectorization. Each of these vectorizations were then embedded into five dimensional space using a variational autoencoder, Isomap, and Spectral embedding. Using these embedded documents, we create three new features for the abstracts and the full text: mean Euclidean distance of five nearest neighbors, mean Euclidean distance of five nearest neighbors from the preceding six months, and a count of texts within an open ball of radius $0.1 * $\textit{standard deviation of all distances}. These were designed to measure where the work sits within the topic's literature, where it sits in relation to prior work, and density of work in the specific topic respectively. The final features used in the model are as shown in Figure \ref{features}. Because our interest is in predicting paper influence for recent papers, we hold out all papers published in 2020. In addition to being the papers of interest, we felt the recent nature of their publication may have an influence on their total citation count.
+To transform the articles' text into usable features, each abstract and text body are run separately through gensim's python implementation of Doc2Vec. This resulted in a 100 dimensional vectorization of each text. We chose to analyze the abstracts independently because they are designed as a succinct summarization of the paper's content and could help focus the vectorization. Each of these vectorizations were then embedded into five dimensional space using a variational autoencoder, Isomap, and Spectral embedding. Using these embedded documents, we create three new features for the abstracts and the full text: mean Euclidean distance of five nearest neighbors, mean Euclidean distance of five nearest neighbors from the preceding six months, and a count of texts within an open ball of radius $0.1 * $\textit{standard deviation of all distances}. These were designed to measure where the work sits within the topic's literature, where it sits in relation to prior work, and density of work in the specific topic respectively. The final features used in the model are as shown in Figure \ref{features}.
 
 \begin{figure}[h]
 \begin{center}
@@ -56,6 +56,10 @@ To transform the articles' text into usable features, each abstract and text bod
 \caption{Features included in analysis}
 \label{features}
 \end{figure}
+
+Because our interest is in predicting paper influence for recent papers, we hold out all papers published in 2020. In addition to being the papers of interest, we felt the recent nature of their publication may have an influence on their total citation numbers. Our predicted ranking of these papers is reproduced in the appendices.
+
+
 
 \section{Transformations}
 
@@ -74,12 +78,15 @@ A significant number of articles in this dataset have no citations. While some o
 
 
 \subsubsection{Covariates}
-Many of the covariates from the embedding task were not linearly related to the citation counts. Most often this appeared as a high density of citation counts close to 0  and long right tails. To account for this, a log transform is applied to the average abstract distance, six month average abstract distance, average body distance, and six month average body distance.
+Many of the covariates from the embedding task were not linearly related to the citation counts. Most often this appeared as a high citation count and lots of density near a value of 0 with low citation counts in the positive and negative limits with low density. We use a $log(x^2)$ transformation of these covariates. While somewhat convoluted and uninterpretable, this transformation does a good job at spreading out the distribution of the data and linearizing the relationship. Additionally, a log transform is applied to the average abstract distance, six month average abstract distance, average body distance, and six month average body distance.
 
 
 \section{Results}
 
 The most successful model is an xgboost model with max depth of 5, learning rate of 0.5, and objective functions squared error and hinge loss for regression and binary classification respectively. Results from the xgboost model and a random forests model can be seen in Figures \ref{binary} and \ref{regression}. In addition to these models we tested linear models, a neural network, and Gaussian process regression and classification. However, the tree based methods performed best on the training data.
+
+The results show that while the choice of embedding had an effect on accuracy, with the variational autoencoder embedding performing best, these improvements were only marginal. Similarly, the effect of the text based features, while helpful,  were less important than date of publication and journal of publication. Inspection of feature importance from the xgboost model showed that far and away the most predictive feature for citations is the journal in which the work is published.
+
 
 \begin{figure}[h]
 \begin{center}
@@ -90,25 +97,13 @@ The most successful model is an xgboost model with max depth of 5, learning rate
 \end{figure}
 
 
-\begin{figure}[h!]
+\begin{figure}[h]
 \begin{center}
   \includegraphics[scale=0.22]{../Figures/regression.png}
 \end{center}
 \caption{Regression}
 \label{regression}
 \end{figure}
-
-The results show that while the choice of embedding had an effect on accuracy, with the variational autoencoder embedding performing best, these improvements were only marginal. Similarly, the effect of the text based features, while helpful, were less important than date of publication and journal of publication. Inspection of feature importance from the xgboost model, as seen in Figure \ref{feature_imp}, showed that far and away the most predictive feature for citations is the journal in which the work is published.
-
-
-\begin{figure}[h]
-\begin{center}
-  \includegraphics[scale=0.5]{../Figures/xgboost_feature_importance.png}
-\end{center}
-\caption{Feature Importance}
-\label{feature_imp}
-\end{figure}
-
 
 \section{Conclusion}
 \label{conclusion}
