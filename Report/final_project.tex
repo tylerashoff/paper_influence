@@ -39,9 +39,9 @@ The volume of research papers and articles relating to Coronaviruses combined wi
 
 \section{Introduction}
 
-As the world community became engulfed in the Covid-19 pandemic in early 2020, the scientific community sprang into action. The rate at which new results and research are still being published is startling. In an effort to help identify potentially influential research, we turn to citation count prediction.
+As the world became engulfed in the Covid-19 pandemic in early 2020, the scientific community sprang into action. The rate at which new results and research are being published is startling. In an effort to help identify potentially influential research, we turn to citation count prediction.
 
-Citation count prediction is one of a number of methods for predicting the importance and popularity of a paper [2]. While numerous modeling methods have already been produced to predict this, we look at citation count prediction specifically as it relates to the Covid-19 Open Research Dataset (CORD-19) [1]. This dataset compiled by the Whitehouse and leading researchers provides information on over 57,000 articles, including the full text. This dataset provides some unique challenges related to the steep rise in articles recently published resulting in a dataset that is highly skewed. Additionally, the does not include information heavily relied on for citation count prediction such as the h-index [3]. Therefore we focus on extracting data from the documents and abstracts themselves in an attempt to predict citation count. Numerous different modeling techniques were attempted, including neural nets, zero-inflated poisson regression, hierarchical modeling and gradient boosting. Many of these models had little to no significance. 
+Citation count prediction is one of a number of methods for predicting the importance and popularity of a paper [2]. While numerous modeling methods have already been produced to predict this, we look at citation count prediction specifically as it relates to the Covid-19 Open Research Dataset (CORD-19) [1]. This dataset compiled by the Whitehouse and leading researchers provides information on over 57,000 articles, including the full text. This dataset provides some unique challenges related to the steep rise in articles recently published resulting in a dataset that is highly skewed. Additionally, it does not include information heavily relied on for citation count prediction such as the h-index, a score given to authors based on past research[3]. Therefore we focus on extracting data from the documents and abstracts themselves in an attempt to predict citation count. Numerous different modeling techniques were attempted, including neural nets, zero-inflated poisson regression, hierarchical modeling, and gradient boosting. However, only results from the best performing models are reported. 
 
 \section{Data Wrangling}
 
@@ -51,7 +51,7 @@ To transform the articles' text into usable features, each abstract and text bod
 
 \begin{figure}[h]
 \begin{center}
-  \includegraphics[scale=0.17]{../Figures/features.png}
+  \includegraphics[scale=0.17]{../figures/features.png}
 \end{center}
 \caption{Features included in analysis}
 \label{features}
@@ -67,7 +67,7 @@ A significant number of articles in this dataset have no citations. While some o
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[scale=0.5]{../Figures/citation_hist.png} 
+\includegraphics[scale=0.6]{../figures/citation_hist.png} 
 \end{center}
 \caption{Transformation of Citation Count}
 \end{figure}
@@ -79,11 +79,13 @@ Many of the covariates from the embedding task were not linearly related to the 
 
 \section{Results}
 
-The most successful model is an xgboost model with max depth of 5, learning rate of 0.5, and objective functions squared error and hinge loss for regression and binary classification respectively. Results from the xgboost model and a random forests model can be seen in Figures \ref{binary} and \ref{regression}. In addition to these models we tested linear models, a neural network, and Gaussian process regression and classification. However, the tree based methods performed best on the training data.
+With each of our models we pursue two types of modeling, regression and binary classification. With regression we predict the number of citations for each article. For our binary classification, we separate the articles into two groups, those that received over five citations and those that received five or fewer. This cut was designed to distinguish between papers that received attention and those that did not. This cut off also resulted in nearly balanced classes.
+
+The most successful model is an XGBoost model with max depth of 5, learning rate of 0.5, and objective functions squared error and hinge loss for regression and binary classification respectively. Results from the XGBoost model and a Random Forests model can be seen in Figures \ref{binary} and \ref{regression}. In addition to these models we tested linear models, a neural network, and Gaussian process regression and classification. However, the tree based methods performed best.
 
 \begin{figure}[h]
 \begin{center}
-  \includegraphics[scale=0.22]{../Figures/binary.png}
+  \includegraphics[scale=0.22]{../figures/binary.png}
 \end{center}
 \caption{Binary Response}
 \label{binary}
@@ -92,28 +94,30 @@ The most successful model is an xgboost model with max depth of 5, learning rate
 
 \begin{figure}[h!]
 \begin{center}
-  \includegraphics[scale=0.22]{../Figures/regression.png}
+  \includegraphics[scale=0.22]{../figures/regression.png}
 \end{center}
 \caption{Regression}
 \label{regression}
 \end{figure}
 
-The results show that while the choice of embedding had an effect on accuracy, with the variational autoencoder embedding performing best, these improvements were only marginal. Similarly, the effect of the text based features, while helpful, were less important than date of publication and journal of publication. Inspection of feature importance from the xgboost model, as seen in Figure \ref{feature_imp}, showed that far and away the most predictive feature for citations is the journal in which the work is published.
+
+The results show that while the choice of embedding had an effect on accuracy, with the variational autoencoder embedding performing best, these improvements were only marginal. Similarly, the effect of the text based features, while helpful, were less important than year and journal of publication. Inspection of feature importance from the XGBoost model, as seen in Figure \ref{feature_imp}, showed that far and away the most predictive feature for citations is the journal in which the work is published.
 
 
 \begin{figure}[h]
 \begin{center}
-  \includegraphics[scale=0.5]{../Figures/xgboost_feature_importance.png}
+  \includegraphics[scale=0.6]{../figures/xgboost_feature_importance.png}
 \end{center}
 \caption{Feature Importance}
 \label{feature_imp}
 \end{figure}
 
 
+
 \section{Conclusion}
 \label{conclusion}
 
-Our inquiry shows that it is possible to learn about citation count from this data. However, it is also  clear that the majority of the signal comes from non-textual features, the data and journal of publication were much more predictive. This result is not conclusive though. Since our data are a subset of the total literature available on coronaviruses, our features designed to capture the relationship to other work may be impacted. This problem may also lead to inflated importance of underrepresented journals. If a journal is only represented a handful of times with highly cited papers, this may inflate the journal's importance if the papers unaccounted for have low citation counts. For this reason, it would be interesting to further this modeling attempt to include analysis that has already been conducted on the entire body of works for each author and journal.  
+Our inquiry shows that it is possible to learn about citation count from these data. However, it is also  clear that the majority of the signal comes from non-textual features, the data and journal of publication were much more predictive. This result is not conclusive though. Since our data are a subset of the total literature available on coronaviruses, our features designed to capture the relationship to other work may be impacted. This problem may also lead to inflated importance of underrepresented journals. If a journal is only represented a handful of times with highly cited papers, this may inflate the journal's importance if the papers unaccounted for have low citation counts. For this reason, it would be interesting to include analysis that has already been conducted on the entire body of works for each author and journal, like the h-index.
 
 Taking this into account, it is likely that our text analysis and embedding techniques are not well suited to this task. Typically this type of work deals with disparate fields of study, while this inquiry looks at a set of academic papers focused on closely related subjects. This inherit similarity makes it more difficult for topic modeling and document vectorization techniques to separate the papers.
 
