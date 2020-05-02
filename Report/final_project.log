@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  2 MAY 2020 13:05
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  2 MAY 2020 11:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -95,14 +95,7 @@ Package graphics Info: Driver file: pdftex.def on input line 99.
 \Gin@req@height=\dimen106
 \Gin@req@width=\dimen107
 )
-(./final_project.aux
-
-LaTeX Warning: Label `others' multiply defined.
-
-
-LaTeX Warning: Label `others' multiply defined.
-
-)
+(./final_project.aux)
 \openout1 = `final_project.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 29.
@@ -118,7 +111,8 @@ LaTeX Font Info:    ... okay on input line 29.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 29.
 LaTeX Font Info:    ... okay on input line 29.
 LaTeX Font Info:    Try loading font information for OT1+ptm on input line 29.
- (/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 \AtBeginShipoutBox=\box28
@@ -203,12 +197,12 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 <../Figures/features.png, id=9, 904.37875pt x 682.55pt>
 File: ../Figures/features.png Graphic file (type png)
 <use ../Figures/features.png>
-Package pdftex.def Info: ../Figures/features.png  used on input line 58.
+Package pdftex.def Info: ../Figures/features.png  used on input line 54.
 (pdftex.def)             Requested size: 153.74236pt x 116.03197pt.
 <../Figures/citation_hist.png, id=11, 642.4pt x 224.84pt>
 File: ../Figures/citation_hist.png Graphic file (type png)
 <use ../Figures/citation_hist.png>
-Package pdftex.def Info: ../Figures/citation_hist.png  used on input line 77.
+Package pdftex.def Info: ../Figures/citation_hist.png  used on input line 74.
 (pdftex.def)             Requested size: 321.19922pt x 112.41972pt.
 
 
@@ -218,53 +212,46 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <../Figures/binary.png, id=21, 779.91376pt x 701.62125pt>
 File: ../Figures/binary.png Graphic file (type png)
 <use ../Figures/binary.png>
-Package pdftex.def Info: ../Figures/binary.png  used on input line 97.
+Package pdftex.def Info: ../Figures/binary.png  used on input line 93.
 (pdftex.def)             Requested size: 171.58156pt x 154.35715pt.
 <../Figures/regression.png, id=22, 940.51375pt x 700.6175pt>
 File: ../Figures/regression.png Graphic file (type png)
 <use ../Figures/regression.png>
-Package pdftex.def Info: ../Figures/regression.png  used on input line 104.
+Package pdftex.def Info: ../Figures/regression.png  used on input line 102.
 (pdftex.def)             Requested size: 206.91367pt x 154.13632pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-! Undefined control sequence.
-l.120 ...tations for literature. {\itInternational
-                                                   Conference on  Informatio...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
 [3 <../Figures/citation_hist.png> <../Figures/binary.png>] [4 <../Figures/regre
-ssion.png>] (./final_project.aux)
+ssion.png>]
+! Undefined control sequence.
+l.121 ...tations for literature. {\itInternational
+                                                   Conference on  Informatio...
 
-LaTeX Warning: There were multiply-defined labels.
-
- ) 
+? 
+[5] (./final_project.aux) ) 
 Here is how much of TeX's memory you used:
- 2212 strings out of 492649
- 31302 string characters out of 6129622
- 100592 words of memory out of 5000000
- 6073 multiletter control sequences out of 15000+600000
+ 2214 strings out of 492649
+ 31326 string characters out of 6129622
+ 100569 words of memory out of 5000000
+ 6075 multiletter control sequences out of 15000+600000
  15452 words of font info for 31 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,8n,39p,1065b,243s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
-exlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/te
-xlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texl
-ive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive
-/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/
-2018/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2018/tex
-mf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2018/texmf-dist/fo
-nts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/
-urw/times/utmri8a.pfb>
-Output written on final_project.pdf (4 pages, 603862 bytes).
+ 41i,8n,39p,1146b,243s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/
+base/8r.enc}</usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmmi10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/c
+mr10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
+7.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10
+.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></u
+sr/local/texlive/2018/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/t
+exlive/2018/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/201
+8/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on final_project.pdf (5 pages, 606060 bytes).
 PDF statistics:
- 59 PDF objects out of 1000 (max. 8388607)
- 36 compressed objects within 1 object stream
+ 62 PDF objects out of 1000 (max. 8388607)
+ 38 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  21 words of extra memory for PDF output out of 10000 (max. 10000000)
 

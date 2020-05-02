@@ -27,7 +27,6 @@ df = data.frame('Features'=
 df%>%
     kable(booktabs=T)%>%
     kable_styling(latex_options = "striped")
-
 ```
 
 Due to heavy right tails and non-linearities, some of the variables are transformed. A log transform is applied to the average abstract distance, six month average abstract distance, average body distance, and six month average body distance.

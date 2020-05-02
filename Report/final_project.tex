@@ -12,7 +12,7 @@ Tyler Ashoff \\
 Department of Interdisciplinary Data Science\\
 Duke University\\
 Durham, NC 27708 \\
-\texttt{tyler.ashoff@duke.edu} \\
+\texttt{ashofftyler@gmail.com} \\
 \\
 \textbf{Jennifer Wilson} \\
 Department of Statistical Science\\
@@ -39,32 +39,29 @@ The volume of research papers and articles relating to Coronaviruses combined wi
 
 \section{Introduction}
 
-As the world community became engulfed in the Covid-19 pandemic in early 2020, the scientific community sprang into action. The rate at which new results and research are still being published at an alarming rate. In an effort to help identify potentially influential research, we turn to citation count prediction.
+As the world community became engulfed in the Covid-19 pandemic in early 2020, the scientific community sprang into action. The rate at which new results and research are still being published is startling. In an effort to help identify potentially influential research, we turn to citation count prediction.
 
 Citation count prediction is one of a number of methods for predicting the importance and popularity of a paper [2]. While numerous modeling methods have already been produced to predict this, we look at citation count prediction specifically as it relates to the Covid-19 Open Research Dataset (CORD-19) [1]. This dataset compiled by the Whitehouse and leading researchers provides information on over 57,000 articles, including the full text. This dataset provides some unique challenges related to the steep rise in articles recently published resulting in a dataset that is highly skewed. Additionally, the does not include information heavily relied on for citation count prediction such as the h-index [3]. Therefore we focus on extracting data from the documents and abstracts themselves in an attempt to predict citation count. Numerous different modeling techniques were attempted, including neural nets, zero-inflated poisson regression, hierarchical modeling and gradient boosting. Many of these models had little to no significance. 
 
 \section{Data Wrangling}
-\label{headings}
 
 The CORD-19 dataset is a collection of scientific articles about COVID-19, SARS-CoV-2, and related coronaviruses. Our 12,372 sample subset of this dataset is chosen by first selecting observations available on the NCBI website and second ensuring that the full body of the text is available in the dataset. Unfortunately citation data was not supplied in the CORD-19, to gather these values we scraped available citation data from the NCBI website. The information available in our compiled dataset included, journal of publication, full article text, authors, number of articles cited in the text, and number of citations received by the article. Since we are interested in understanding paper importance in terms of contribution to the field, these citations are key to our inquiry.
 
-To transform the articles' text into usable features, each abstract and text body are run separately through gensim's python implementation of Doc2Vec. This resulted in a 100 dimensional vectorization of each text. We chose to analyze the abstracts independently because they are designed as a succinct summarization of the paper's content and could help focus the vectorization. Each of these vectorizations were then embedded into 5 dimensional space using a variational autoencoder, Isomap, and Spectral embedding. Using these embedded documents, we create three new features for the abstracts and the full text: mean Euclidean distance of 5 nearest neighbors, mean Euclidean distance of 5 nearest neighbors from the preceding six months, and a count of texts within an open ball of radius $0.1 * $\textit{standard deviation of all distances}. These were designed to measure where the work sits within the topic's literature, where it sits in relation to prior work, and density of work in the specific topic respectively. 
-
-The final features used in the model are as shown below:
-
+To transform the articles' text into usable features, each abstract and text body are run separately through gensim's python implementation of Doc2Vec. This resulted in a 100 dimensional vectorization of each text. We chose to analyze the abstracts independently because they are designed as a succinct summarization of the paper's content and could help focus the vectorization. Each of these vectorizations were then embedded into five dimensional space using a variational autoencoder, Isomap, and Spectral embedding. Using these embedded documents, we create three new features for the abstracts and the full text: mean Euclidean distance of five nearest neighbors, mean Euclidean distance of five nearest neighbors from the preceding six months, and a count of texts within an open ball of radius $0.1 * $\textit{standard deviation of all distances}. These were designed to measure where the work sits within the topic's literature, where it sits in relation to prior work, and density of work in the specific topic respectively. The final features used in the model are as shown in Figure \ref{features}.
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[scale=0.17]{../Figures/features.png} 
+  \includegraphics[scale=0.17]{../Figures/features.png}
 \end{center}
+\caption{Features included in analysis}
+\label{features}
 \end{figure}
 
-Because ounce on their total citation numbers. Our predicted ranking of these papers is reproduced in the appendices.r. As interest is in predicting paper influence for recent papers, we hold out all papers published in 2020. In addition to being the papers of interest, we felt the recent nature of their publication may have an influence.
+Because our interest is in predicting paper influence for recent papers, we hold out all papers published in 2020. In addition to being the papers of interest, we felt the recent nature of their publication may have an influence on their total citation numbers. Our predicted ranking of these papers is reproduced in the appendices.
 
 
 
 \section{Transformations}
-\label{others}
 
 Transformations of the response and covariates proved to have significant impact on model performance. Most gains in improving results came from transformations as opposed to tuning parameters.
 
@@ -85,34 +82,38 @@ Many of the covariates from the embedding task were not linearly related to the 
 
 
 \section{Results}
-\label{others}
 
-The most successful model is an xgboost model with max depth of 5, learning rate of 0.5, and objective functions squared error and hinge loss for regression and binary classification respectively. Also shown below are the results from a random forests model. In addition to these models we tested linear models, a neural network, and Gaussian process regression and classification. However, the tree based methods performed best on the training data.
+The most successful model is an xgboost model with max depth of 5, learning rate of 0.5, and objective functions squared error and hinge loss for regression and binary classification respectively. Results from the xgboost model and a random forests model can be seen in Figures \ref{binary} and \ref{regression}. In addition to these models we tested linear models, a neural network, and Gaussian process regression and classification. However, the tree based methods performed best on the training data.
 
 The results show that while the choice of embedding had an effect on accuracy, with the variational autoencoder embedding performing best, these improvements were only marginal. Similarly, the effect of the text based features, while helpful,  were less important than date of publication and journal of publication. Inspection of feature importance from the xgboost model showed that far and away the most predictive feature for citations is the journal in which the work is published.
 
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[scale=0.22]{../Figures/binary.png} 
+  \includegraphics[scale=0.22]{../Figures/binary.png}
 \end{center}
 \caption{Binary Response}
+\label{binary}
 \end{figure}
+
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[scale=0.22]{../Figures/regression.png} 
+  \includegraphics[scale=0.22]{../Figures/regression.png}
 \end{center}
 \caption{Regression}
+\label{regression}
 \end{figure}
 
 \section{Conclusion}
-\label{others}
+\label{conclusion}
 
+Our inquiry shows that it is possible to learn about citation count from this data. However, it is also  clear that the majority of the signal comes from non-textual features, the data and journal of publication were much more predictive. This result is not conclusive though. Since our data are a subset of the total literature available on coronaviruses, our features designed to capture the relationship to other work may be impacted. This problem may also lead to inflated importance of underrepresented journals. If a journal is only represented a handful of times with highly cited papers, this may inflate the journal's importance if the papers unaccounted for have low citation counts. More likely though, is that our text analysis and embedding techniques are not well suited to this task. Typically this type of work deals with disparate fields of study, while this inquiry looks at a set of academic papers focused on closely related subjects. This inherit similarity makes it more difficult for topic modeling and document vectorization techniques to separate the papers.
 
+While our current models performed moderately well, we believe using tree based predictive modeling in combination with embedded texts has more promise on a more diverse set of papers. Interesting further research would include testing these methods on a more complete body of coronavirus literature and on papers from a wider range of academic fields.
+
+\newpage
 \subsubsection*{References}
-
-References follow the acknowledgments. Use unnumbered 
 
 \small{
 [1] Allen Institute For AI. “COVID-19 Open Research Dataset Challenge (CORD-19).” Kaggle, CDC, 25 Apr. 2020, www.kaggle.com/allen-institute-for-ai/CORD-19-research-challenge.
