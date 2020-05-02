@@ -1,0 +1,26 @@
+library(tidyverse)
+df = read.csv('../results.csv', header=F)
+
+df = df[df['V3'] != 'gaussian_process',]%>%
+    mutate('V4' = round(V4, 2),
+           'V5' = round(V5, 2),
+           'V6' = round(V6, 2))
+
+binary = df[df$V2 == 'binary',]%>%
+    select(-'V2')%>%
+    rename('Embedding' = 'V1',
+           'Model' = 'V3',
+           'AUC' = 'V4',
+           'Accuracy' = 'V5',
+           'F1' = 'V6')
+binary
+
+regression = df[df$V2 == 'regression',]%>%
+    select(-'V2')%>%
+    rename('Embedding' = 'V1',
+           'Model' = 'V3',
+           'MSE' = 'V4',
+           'R2' = 'V5',
+           'Variance Explained' = 'V6')
+regression
+

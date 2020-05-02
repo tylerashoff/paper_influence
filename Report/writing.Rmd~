@@ -1,0 +1,11 @@
+---
+title: 'Some Parts'
+output:
+  pdf_document:
+    includes:
+      in_header:
+        - final_project.sty
+---
+
+
+# Hello

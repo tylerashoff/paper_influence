@@ -98,6 +98,7 @@ class analysis():
         
         bst = xgb.train(params, data_train)
         preds = bst.predict(data_test)
+
         return(preds)
 
     def gaussian_process(self, x_train, x_test, y_train):
@@ -132,6 +133,7 @@ class analysis():
         pass
 
     def write(self, model, scores):
+        
         types = 'regression' if not self.binary else 'binary'
         csv.writer(open('results.csv', 'a')).writerow([str(self.embedding),
                                                        types, model,
@@ -148,12 +150,12 @@ class analysis():
         xg_scores = self.scores(y_test, xg_preds)
         self.write('xgboost', xg_scores)
         print(xg_scores)
-
+        '''
         gp_preds = self.gaussian_process(x_train, x_test, y_train)
         gp_scores = self.scores(y_test, gp_preds)
         self.write('gaussian_process', gp_scores)
         print(gp_scores)
-        '''
+        
         nn_preds = self.neural_network(x_train, x_test, y_train)
         nn_scores = self.scores(y_test, nn_preds)
         self.write('neural_net', nn_scores)
@@ -211,11 +213,11 @@ for embedding in embeddings:
         np.log(list(df[:, 5]+small_const)),
         np.log(list(df[:, 6]+small_const)),
         df[:, 7],
-        df[:, end_ind-2:end_ind+1].T,
+        #df[:, end_ind-5:end_ind+1].T,
         np.log(list(df[:, end_ind+1]+small_const)),
-        df[:, end_ind+2],
-        np.log(list(df[:, end_ind+5]**2+small_const)),
-        np.log(list(df[:, end_ind+6]**2+small_const))
+        np.log(list(df[:, end_ind+2]+small_const)),
+        df[:, end_ind+3]
+        #np.log(df[:, end_ind+4:].astype('float64')**2+small_const).T
     ]).T.astype('float64')
 
     y = np.log(list(df[:, 3]+10**(-4)))
@@ -238,9 +240,6 @@ for embedding in embeddings:
     anlys.main(x_train, x_test, y_train, y_test,
                binary=True, embedding=embedding)
 
-    if embedding is not None and anlys.verbose:
-        os.system("say " + "'done with " + embedding + "'")
-        pass
     pass
 
 if anlys.verbose:
